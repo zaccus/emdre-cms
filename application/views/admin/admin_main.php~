@@ -1,0 +1,4 @@
+<ul>
+	<li><a href="<?php echo base_url(); ?>admin/properties/">Properties</a></li>
+	<li><a href="<?php echo base_url(); ?>admin/users/">Users</a></li>
+</ul>

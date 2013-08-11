@@ -1,0 +1,80 @@
+<?php header('Content-type: text/javascript'); ?>
+
+(function($, ev) {
+	var fetchProperties = function() {
+		$('tr:gt(0)').remove();
+		$.ajax({
+			url: ev.baseUrl + 'admin/fetch_properties',
+			type: 'get',
+			success: function(res) {
+				console.log(res);
+				var resObj = JSON.parse(res);
+				
+				for (item in resObj) {
+					$('#propertyTable').append('<tr id="' + resObj[item].id + '">' +
+												'<td>' + resObj[item].address + '</td>' +
+												'<td>' + resObj[item].city + '</td>' + 
+												'<td>' + resObj[item].beds + '</td>' + 
+												'<td>' + resObj[item].baths + '</td>' +
+												'<td>' + resObj[item].sqft + '</td>' +
+												'<td>' + resObj[item].acres + '</td>' +
+												'<td><a href="#" class="delete">Delete</a></td>' +
+												'</tr>');
+				}
+				
+				$('.delete').click(function(e) {
+					e.preventDefault();
+					
+					var id = $(e.target).closest('tr').attr('id');
+					deleteProperty(id);
+				});
+			},
+			error: function(res) {
+				console.log(res.message);
+			}
+		});
+	}
+	
+	var deleteProperty = function(id) {
+		$.ajax({
+			url: ev.baseUrl + 'admin/delete_listing',
+			type: 'post',
+			data: {property_id: id},
+			success: function(res) {
+				fetchProperties();
+			},
+			error: function(res) {
+				console.log(res);
+			}
+		});
+	}
+
+	$('document').ready(function() {
+		fetchProperties();
+	
+		$('#save').click(function() {
+			var data = {};
+			data.address = $('#address').val();
+			data.city = $('#city').val();
+			data.beds = $('#beds').val();
+			data.baths = $('#baths').val();
+			data.sqft = $('#sqft').val();
+			data.acres = $('#acres').val();
+			
+			$.ajax({
+				url: ev.baseUrl + 'admin/create_listing',
+				type: 'post',
+				data: data,
+				success: function(res) {
+					$('.property-input').val("");
+					fetchProperties();
+				},
+				error: function(res) {
+					var resObj = JSON.parse(res);
+					$('#message').html(resObj.message);
+					console.log(res);
+				}
+			});
+		});
+	});
+})(jQuery, emdre_vars)

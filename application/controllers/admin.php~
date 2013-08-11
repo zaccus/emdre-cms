@@ -1,0 +1,154 @@
+<?php
+class Admin extends CI_Controller {
+	function __construct() {
+		parent::__construct();
+		
+		error_reporting(E_ALL);
+		ini_set('display_errors', '1');
+	
+		$this->validation_redirect();
+		$this->load->model('user_model');
+	}
+	
+	private function validation_redirect() {
+		
+		if (! $this->session->userdata('validated')) {
+			redirect(base_url().'login');
+		}
+	}
+
+	public function index() {
+		$data['title'] = 'Welcome to Admin';
+		$this->load->view('header_view', $data);
+		$this->load->view('admin/admin_main');
+		$this->load->view('footer_view');
+	}
+	
+	public function logout() {
+		$this->session->sess_destroy();
+		redirect('/login');
+	}
+	
+	public function properties($ext = null) {
+	/*
+		switch ($ext) {
+			case 'manage':
+				$data['title'] = 'Add/Delete Properties';
+				$this->load->view('header_view', $data);
+				$this->load->view('admin/admin_panel');
+				$this->load->view('admin/properties_view');
+				$this->load->view('footer_view');
+				break;
+			case 'for-sale':
+				$data['title'] = 'For Sale Listings';
+				$this->load->view('header_view', $data);
+				$this->load->view('admin/admin_panel');
+				$this->load->view('admin/for_sale_listings_view');
+				$this->load->view('footer_view');
+				break;
+			default:
+				$data['title'] = 'Properties';
+				$this->load->view('header_view', $data);
+				$this->load->view('admin/admin_panel');
+				$this->load->view('admin/properties_view');
+				$this->load->view('footer_view');
+		}*/
+	}
+	
+	public function users($ext = null) {
+		if ($ext == null) {
+			$data['title'] = 'Users';
+			$this->load->view('header_view', $data);
+			$this->load->view('admin/admin_panel');
+			$this->load->view('admin/user_view');
+			$this->load->view('footer_view');
+		} elseif ($ext == 'add') {
+			$data['title'] = 'Add User';
+			$this->load->view('header_view', $data);
+			$this->load->view('admin/admin_panel');
+			$this->load->view('admin/user_add_view');
+			$this->load->view('footer_view');
+		}
+	}
+	
+	public function fetch_properties() {
+		if ($this->input->is_ajax_request()) {
+			echo json_encode($this->property_model->fetch_properties());
+		} else {
+			redirect(base_url().'admin/');
+		}
+	}
+	
+	public function fetch_for_sale_listings() {
+	/*
+		if ($this->input->is_ajax_request()) {
+			echo json_encode($this->property_model->fetch_for_sale_listings());
+		} else {
+			redirect(base_url().'admin/');
+		}*/
+	}
+	
+	public function create_listing() {
+		if ($this->input->is_ajax_request()) {
+			$data = array(
+				'address' => $this->input->post('address'),
+				'city' => $this->input->post('city'),
+				'beds' => $this->input->post('beds'),
+				'baths' => $this->input->post('baths'),
+				'sqft' => $this->input->post('sqft'),
+				'acres' => $this->input->post('acres'),
+				'created' => NULL,
+				'modified' => NULL
+			);
+			
+			if ($this->property_model->insert_property($data)) {
+				$this->data['message'] = 'Property successfully created.';
+			} else {
+				$this->output->set_status_header('400');
+				$this->data['message'] = 'Error creating property.';
+			}
+			echo json_encode($this->data);
+		} else {
+			show_error('No direct access allowed');
+		}
+	}
+
+	public function delete_listing() {
+		if ($this->input->is_ajax_request()) {
+			$id = $this->input->post('property_id');
+			
+			if ($this->property_model->delete_property($id)) {
+				$this->data['message'] = 'Property successfully deleted.';
+			} else {
+				$this->output->set_status_header('400');
+				$this->data['message'] = 'Error deleting property.';
+			}
+			echo json_encode($this->data);
+		} else {
+			show_error('No direct access allowed');
+		}
+	}
+	
+	public function add_user() {
+		if ($this->input->is_ajax_request()) {
+			$user = array(
+				'user_fName' => $this->input->post('fName'),
+				'user_lName' => $this->input->post('lName'),
+				'username' => $this->input->post('username'),
+				'password' => md5($this->input->post('password'))
+			);
+			var_dump($user);
+
+			if ($this->user_model->add_user($user)) {
+				$this->data['message'] = 'User successfully added.';
+			} else {
+				$this->output->set_status_header('400');
+				$this->data['message'] = 'Error creating user.';
+			}
+			echo json_encode($this->data);
+		} else {
+			show_error('No direct access allowed');
+		}
+	}
+}
+?>

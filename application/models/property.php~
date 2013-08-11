@@ -1,0 +1,35 @@
+<?php
+class Property extends CI_Model {
+	var $address;
+	var $city;
+	var $beds;
+	var $baths;
+	var $sqft;
+	var $acres;
+	var $created;
+	var $modified;
+
+	function __construct() {
+		parent::__construct();
+	}
+	
+	function insert_property() {
+		$this->address = $this->input->post('address');
+		$this->city = $this->input->post('city');
+		$this->beds = $this->input->post('beds');
+		$this->baths = $this->input->post('baths');
+		$this->sqft = $this->input->post('sqft');
+		$this->acres = $this->input->post('acres');
+		$this->created = NULL;
+		$this->modified = NULL;
+		
+		return $this->db->insert('property', $this);
+	}
+	
+	function fetch_properties() {
+		$query = $this->db->get('property');
+		var_dump($query->result_array());
+		return $query->result_array();
+	}
+}
+?>

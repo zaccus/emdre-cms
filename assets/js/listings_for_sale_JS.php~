@@ -1,0 +1,22 @@
+<?php header('Content-type: text/javascript'); ?>
+
+(function($, ev) {
+	var fetchProperties = function() {
+		$.ajax({
+			url: ev.baseUrl + 'admin/fetch_for_sale_listings/',
+			type: 'get',
+			success: function(res) {
+				console.log(res);
+				return res;
+			},
+			error: function(res) {
+				console.log("fetchProperties error.");
+			}
+		});
+	}
+	$(document).ready(function() {
+		//var properties = JSON.parse(fetchProperties());
+		//console.log(properties);
+		console.log(fetchProperties());
+	});
+})(jQuery, emdre_vars)

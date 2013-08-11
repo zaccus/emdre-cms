@@ -1,0 +1,34 @@
+<?php
+class Property_Model extends CI_Model {
+	var $address;
+	var $city;
+	var $beds;
+	var $baths;
+	var $sqft;
+	var $acres;
+	var $created;
+	var $modified;
+
+	function __construct() {
+		parent::__construct();
+	}
+	
+	function insert_property($data) {
+		return $this->db->insert('property', $data);
+	}
+	
+	function fetch_properties() {
+		$query = $this->db->get('property');
+		return $query->result_array();
+	}
+	
+	function fetch_for_sale_listings() {
+		//$this->db->
+	}
+	
+	function delete_property($id) {
+		$this->db->where('id', $id);
+		return $this->db->delete('property');
+	}
+}
+?>

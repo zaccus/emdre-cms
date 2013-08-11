@@ -1,0 +1,26 @@
+	<div id="listings_add">
+		<table id='propertyTable'>
+			<th>Address</th>
+			<th>City</th>
+			<th>Bedrooms</th>
+			<th>Bathrooms</th>
+			<th>SqFt</th>
+			<th>Acres</th>
+			<th>Delete</th>
+		</table>
+		<div>
+			Address: <input id='address' class='property-input'> <br />
+			City: <input id='city' class='property-input'><br />
+			Beds: <input id='beds' class='property-input'><br />
+			Baths: <input id='baths' class='property-input'><br />
+			SqFt: <input id='sqft' class='property-input'><br />
+			Acres: <input id='acres' class='property-input'>
+			<input id='save' type='button' value='submit'>
+		</div>
+		<div id='message'></div>
+		
+		<script type='text/javascript'>
+			var baseUrl = <?php echo base_url(); ?>;
+		</script>
+		<script type='text/javascript' src="<?php echo base_url(); ?>assets/js/listings_add_JS.php"></script>
+	</div>

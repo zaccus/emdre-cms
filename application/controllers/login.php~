@@ -1,0 +1,28 @@
+<?php
+class Login extends CI_Controller {
+	function __construct() {
+		parent::__construct();
+		
+		error_reporting(E_ALL);
+		ini_set('display_errors', '1');
+	}
+
+	public function index() {
+		$data['title'] = 'Please Log In';
+		$this->load->view('header_view', $data);
+		$this->load->view('admin/login_view');
+		$this->load->view('footer_view');
+	}
+	
+	public function process() {
+		$this->load->model('login_model');
+		$result = $this->login_model->validate();
+		
+		if (! $result) {
+			redirect('login/');
+		} else {
+			redirect('admin/');
+		}
+	}
+}
+?>
