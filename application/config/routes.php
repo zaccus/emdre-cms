@@ -47,7 +47,7 @@ $route['admin/properties_controller'] = "errors/page_missing";
 $route['admin/for-sale-listings'] = "admin/for_sale_listings_controller";
 $route['admin/for_sale_listings_controller'] = "errors/page_missing";
 
-$route['admin/for-rent-listings'] = "admin/for_rent_listings";
+$route['admin/for-rent-listings'] = "admin/for_rent_listings_controller";
 $route['admin/for_rent_listings_controller'] = "errors/page_missing";
 
 /* End of file routes.php */

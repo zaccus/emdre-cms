@@ -61,7 +61,13 @@
             }
             
         } else if (isForRent()) {
-            //
+            for (item in resObj) {
+                $('#propertyTable').append('<tr id="' + resObj[item].id + '">' +
+                                            '<td>' + resObj[item].address + '</td>' +
+                                            '<td>' + resObj[item].price + '</td>' + 
+                                            '<td><a href="#" class="delete">Delete</a></td>' +
+                                            '</tr>');
+            }
         }
     }
     
@@ -75,13 +81,10 @@
         if (isForSale()) {
             endpoint = "admin/for_sale_listings_controller/fetch_for_sale_listings";
         } else if (isForRent()) {
-            endpoint = "admin/fetch_for_rent_listings";
+            endpoint = "admin/for_rent_listings_controller/fetch_for_rent_listings";
         } else {
             endpoint = "admin/properties_controller/fetch_properties";
         }
-        
-        console.log(ev);
-        console.log(endpoint);
         
         // remove all rows except table headers
         $('#propertyTable tr:gt(0)').remove();
@@ -91,8 +94,10 @@
             url: ev.baseUrl + endpoint,
             type: 'get',
             success: function(res) {
-                console.log(res);
+                
+                // make js object with response
                 var resObj = JSON.parse(res);
+                
                 // build the table
                 buildTable(resObj);
                 
@@ -124,7 +129,7 @@
         if (isForSale()) {
             endpoint = "admin/for_sale_listings_controller/fetch_not_for_sale_listings";
         } else if (isForRent()) {
-            endpoint = "admin/fetch_not_for_rent_listings";
+            endpoint = "admin/for_rent_listings_controller/fetch_not_for_rent_listings";
         }
         
         // make ajax call and re-build select options
@@ -136,15 +141,7 @@
                 
                 for (item in resObj) {
                     $('#property-select').append('<option id="' + resObj[item].id + '">' + resObj[item].address + '</option>');
-                }
-                /*
-                if (isForSale()) {
-                    for (item in resObj) {
-                        $('#property-select').append('<option id="' + resObj[item].id + '">' + resObj[item].address + '</option>');
-                    }
-                } else if (isForRent()) {
-                    
-                } */             
+                }      
             },
             error: function(res) {
                 console.log(res);
@@ -162,7 +159,7 @@
         if (isForSale()) {
             endpoint = "admin/for_sale_listings_controller/delete_for_sale_listing";
         } else if (isForRent()) {
-            endpoint = "admin/delete_for_rent_listings";
+            endpoint = "admin/for_rent_listings_controller/delete_for_rent_listing";
         } else {
             endpoint = "admin/properties_controller/delete_property";
         }
@@ -175,7 +172,7 @@
 				fetchListings();
 			},
 			error: function(res) {
-				console.log(res);
+				document.write(res.responseText);
 			}
 		});
 	}
@@ -188,11 +185,11 @@
         
         // assign endpoint appropriately, depending on ev.type
         if (isForSale()) {
-            endpoint = "admin/create_for_sale_listing";
+            endpoint = "admin/for_sale_listings_controller/create_for_sale_listing";
         } else if (isForRent()) {
-            endpoint = "admin/create_for_rent_listing";
+            endpoint = "admin/for_rent_listings_controller/create_for_rent_listing";
         } else {
-            endpoint = "properties_controller/create_property";
+            endpoint = "admin/properties_controller/create_property";
         }
         
         var data = {
@@ -208,8 +205,6 @@
             acres: $("#acres").val()
         };
         
-        console.log(data);
-        
         $.ajax({
             url: ev.baseUrl + endpoint,
             type: 'post',
@@ -220,7 +215,7 @@
                 fetchListings();
             },
             error: function(res) {
-               console.log(res);
+               document.write(res.responseText);
             }
         });
     }
@@ -265,7 +260,7 @@
             e.preventDefault();
             
             save();
-            $('.sales-input').val('');
+            $('.listing-input input, .listing-input textarea').val('');
             $(e.target).closest(".modal").hide();
             $("#add-listing-link").show();
         });

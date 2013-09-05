@@ -44,13 +44,13 @@
                 );
                 
                 if ($this->insert_property($propData)) {
-                    $saleData['propId'] = $this->db->insert_id();
+                    $rentData['propId'] = $this->db->insert_id();
                 } else {
                     return false;
                 }
             }
             
-            return $this->db->insert('for_sale', $saleData);
+            return $this->db->insert('for_rent', $rentData);
         }
         
         // delete a for rent record

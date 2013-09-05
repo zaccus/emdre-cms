@@ -8,36 +8,35 @@ error_reporting(E_ALL);
             <tr>
                 <th>Address</th>
                 <th>Price</th>
-                <th>Blurb</th>
             </tr>
         </table>
         
-        <div id="add-for-rent-listing" class="modal hidden">
+        <div id="add-listing" class="modal hidden">
             
             <label>Select a property:
-                <select class="property-select">
+                <select id="property-select">
                     <option id="newProperty">New Property</option>
                 </select>
             </label>
             
-            <div id="property-info">
-                Address: <input id='address' class='property-input'> <br>
-                City: <input id='city' class='property-input'><br>
-                Beds: <input id='beds' class='property-input'><br>
-                Baths: <input id='baths' class='property-input'><br>
-                SqFt: <input id='sqft' class='property-input'><br>
-                Acres: <input id='acres' class='property-input'>
+            <div id="property-info" class="listing-input">
+                Address: <input id='address'> <br>
+                City: <input id='city'><br>
+                Beds: <input id='beds'><br>
+                Baths: <input id='baths'><br>
+                SqFt: <input id='sqft'><br>
+                Acres: <input id='acres'>
             </div>
             
-            <div id="for-rent-info">
-                Price: <input id='price' class='for-sale-input'><br>
-                Blurb: <input id='blurb' class='for-sale-input'><br>
-                Comments: <textarea id='comments' class='for-sale-input' cols='50' rows='10'></textarea>
+            <div id="for-rent-info" class="listing-input">
+                Price: <input id='price'><br>
+                Blurb: <input id='blurb'><br>
+                Comments: <textarea id='comments'></textarea>
             </div>
             
             <input id='save' type='button' value='submit'>
             <a href="#" class="modal-cancel">Cancel</a>
         </div>
         
-        <a href="#" class="add-listing-link">Add a listing</a>
+        <a href="#" id="add-listing-link">Add a listing</a>
     </div>
